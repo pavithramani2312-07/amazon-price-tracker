@@ -10,7 +10,7 @@ Amazon Price Tracker is a Java-based Selenium automation project that monitors A
 * Page Object Model (POM)
 * Data-Driven Testing (Apache POI)
 * Excel
-* Email/Push Notifications
+* Email
 
 ## Features
 
