@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:6.0.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.apache.poi:poi-ooxml:5.4.1' //Apache POI dependency for excel reader
+    implementation 'org.seleniumhq.selenium:selenium-java:4.34.0'
+    implementation 'io.github.bonigarcia:webdrivermanager:6.1.0'
+}
+
+test {
+    useJUnitPlatform()
+}
