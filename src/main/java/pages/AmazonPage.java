@@ -2,6 +2,10 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class AmazonPage {
     WebDriver driver;
@@ -15,12 +19,14 @@ public class AmazonPage {
 
         System.out.println("Opened: " +url);
     }
-    public String getCurrentPrice() {
-
-        String price = driver.findElement(
-                        By.cssSelector("span.a-price-whole"))
+    public String getCurrentPrice() {        //Explicit wait instead of thread
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        String actualprice = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector("span.a-price-whole")))
                 .getText();
 
-        return price;
+        return actualprice;
+        }
     }
-}
+
+

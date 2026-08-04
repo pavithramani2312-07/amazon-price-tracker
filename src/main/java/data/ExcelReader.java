@@ -1,15 +1,18 @@
 package data;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import model.Product;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import static org.apache.commons.lang3.CharSetUtils.count;
-
 public class ExcelReader {
-    public void readproduct(){
+    public List<Product> readproduct(){
+        List<Product> products = new ArrayList<>();
         try{
             FileInputStream fis = new FileInputStream("src/main/resources/product_list.xlsx");
             Workbook workbook = WorkbookFactory.create(fis);
@@ -23,17 +26,18 @@ public class ExcelReader {
                 String productname = row.getCell(1).getStringCellValue();
                 double targetprice  =row.getCell(2).getNumericCellValue();
 
-                System.out.println("Processing count " +i);
-                System.out.println("Product name = " +productname);
-                System.out.println("https://www.amazon.in/dp/"+asin);
-                System.out.println("Target Price = " +targetprice);
-                System.out.println("-------------------------------------------");
+                Product product= new Product(asin, productname, targetprice);
+                products.add(product);
             }
+            System.out.println("Read Excel sheet");
             System.out.println("Total product = " + (i-1));
+            System.out.println("___________");
             workbook.close();
             fis.close();
+            return products;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return products;
     }
 }

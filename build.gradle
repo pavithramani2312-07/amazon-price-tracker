@@ -16,6 +16,8 @@ dependencies {
     implementation 'org.apache.poi:poi-ooxml:5.4.1' //Apache POI dependency for excel reader
     implementation 'org.seleniumhq.selenium:selenium-java:4.34.0'
     implementation 'io.github.bonigarcia:webdrivermanager:6.1.0'
+    implementation 'com.sun.mail:jakarta.mail:2.0.1' // To trigger the mail
+    implementation 'jakarta.activation:jakarta.activation-api:2.0.1'
 }
 
 test {
