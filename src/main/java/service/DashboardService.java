@@ -1,5 +1,7 @@
 package service;
 
+import java.io.FileWriter;
+
 public class DashboardService {
     private StringBuilder html;
     public void createDashboard(){
@@ -43,7 +45,18 @@ public class DashboardService {
         html.append("</td>");
         html.append("</tr>");
     }
-    public void saveReport(){
+    public void saveDashboard(){
+        try{
+            html.append("</table>");
+            html.append("</body>");
+            html.append("</html>");
+            FileWriter writer=new FileWriter("src/main/resources/dashboard.html");
+            writer.write(html.toString());
+            writer.close();
+            System.out.println("Dashboard created successfully");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 }

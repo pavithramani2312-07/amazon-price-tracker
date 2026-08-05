@@ -25,6 +25,9 @@ public class PriceTrackerRunner {
         ReportService reportService = new ReportService();
         reportService.createreport();
 
+        DashboardService dashboardService=new DashboardService();
+        dashboardService.createDashboard();
+
         for (Product product: products){
             amazonPage.openproduct(product.getAsin());
             String actualprice = amazonPage.getCurrentPrice();
@@ -46,15 +49,20 @@ public class PriceTrackerRunner {
             }
             System.out.println("_____________________________");
             reportService.addrow(product.getProductname(), product.gettargetprice(), currentprice, status, "https://www.amazon.in/dp/"+product.getAsin());
-                    }
+            dashboardService.addRow(product.getProductname(), product.gettargetprice(), currentprice, status, "https://www.amazon.in/dp/"+product.getAsin());
+        }
         reportService.saveReport();
+        dashboardService.saveDashboard();
         EmailService emailService = new EmailService();
         emailService.sendEmail(
                 "Amazon Price Tracker Report",
                 "Total Products checked: " +products.size() + "\n" +
                         "Generated on: " + LocalDateTime.now() + "\n" +
                         "Please find the attached report and url.",
-                "src/main/resources/priceReport.xlsx"
+                "src/main/resources/priceReport.xlsx",
+                "src/main/resources/dashboard.html"
+
+
         );
         driver.quit();
 }}

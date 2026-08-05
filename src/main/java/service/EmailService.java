@@ -8,9 +8,10 @@ import java.io.File;
 import java.util.Properties;
 
 public class EmailService {
-    public void sendEmail(String subject, String body, String attachmentpath){
+    public void sendEmail(String subject, String body, String reportpath, String attachmentpath){
        System.out.println(subject);
        System.out.println(body);
+       System.out.println(reportpath);
        System.out.println(attachmentpath);
        String sendermail = ConfigReader.getProperty("sender_email");
        String password = ConfigReader.getProperty("sender.password");
@@ -38,17 +39,24 @@ public class EmailService {
 
             textPart.setText(body);
 
-            MimeBodyPart attachmentPart =
+            MimeBodyPart reportPart =
                     new MimeBodyPart();
 
-            attachmentPart.attachFile(
+            reportPart.attachFile(
+                    new File(reportpath));
+
+            MimeBodyPart dashboardPart =
+                    new MimeBodyPart();
+
+            dashboardPart.attachFile(
                     new File(attachmentpath));
 
             Multipart multipart =
                     new MimeMultipart();
 
             multipart.addBodyPart(textPart);
-            multipart.addBodyPart(attachmentPart);
+            multipart.addBodyPart(reportPart);
+            multipart.addBodyPart(dashboardPart);
 
             message.setContent(multipart);
 
@@ -56,6 +64,7 @@ public class EmailService {
 
             System.out.println(
                     "Email sent successfully!");
+
 
         } catch (Exception e) {
             e.printStackTrace();
