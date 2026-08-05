@@ -1,8 +1,7 @@
 package service;
 
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.common.usermodel.HyperlinkType;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import data.ExcelReader;
 import java.io.FileNotFoundException;
@@ -31,8 +30,23 @@ public class ReportService {
         row.createCell(1).setCellValue(targetPrice);
         row.createCell(2).setCellValue(currentPrice);
         row.createCell(3).setCellValue(status);
-        row.createCell(4).setCellValue(productUrl);
+        Cell linkcell = row.createCell(4);
+        linkcell.setCellValue(productUrl);
 
+
+        CreationHelper creationHelper= workbook.getCreationHelper();
+        Hyperlink hyperlink = creationHelper.createHyperlink(HyperlinkType.URL);
+        hyperlink.setAddress(productUrl);
+        linkcell.setHyperlink(hyperlink);
+
+        CellStyle hyperlinkStyle = workbook.createCellStyle();
+        Font hyperlinkFont = workbook.createFont();
+        hyperlinkFont.setUnderline(Font.U_SINGLE);
+        hyperlinkFont.setColor(IndexedColors.BLUE.getIndex());
+
+        hyperlinkStyle.setFont(hyperlinkFont);
+
+        linkcell.setCellStyle(hyperlinkStyle);
         rowNumber++;
     }
     public void saveReport() throws IOException {

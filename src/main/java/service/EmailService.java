@@ -59,7 +59,5 @@ public class EmailService {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        System.out.println("Email sent successfully");
-    }
+        }}
 }
