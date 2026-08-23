@@ -13,9 +13,23 @@ public class EmailService {
        System.out.println(body);
        System.out.println(reportpath);
        System.out.println(attachmentpath);
-       String sendermail = ConfigReader.getProperty("sender_email");
-       String password = ConfigReader.getProperty("sender.password");
-       String receivermail = ConfigReader.getProperty("receiver_email");
+
+        // Fallback for local execution
+        final String sendermail =
+                System.getenv("SENDER_EMAIL") != null
+                        ? System.getenv("SENDER_EMAIL")
+                        : ConfigReader.getProperty("sender_email");
+
+        final String password =
+                System.getenv("SENDER_PASSWORD") != null
+                        ? System.getenv("SENDER_PASSWORD")
+                        : ConfigReader.getProperty("sender.password");
+
+        final String receivermail =
+                System.getenv("RECEIVER_EMAIL") != null
+                        ? System.getenv("RECEIVER_EMAIL")
+                        : ConfigReader.getProperty("receiver_email");
+
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable","true");
