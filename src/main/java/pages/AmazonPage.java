@@ -29,7 +29,7 @@ public class AmazonPage {
 
         try {
             WebElement continueBtn = driver.findElement(
-                    By.xpath("//*[contains(text(),'Continue')]")
+                    By.xpath("//*[contains(text(),'Continue shopping')]")
             );
 
             System.out.println("Continue button detected");
