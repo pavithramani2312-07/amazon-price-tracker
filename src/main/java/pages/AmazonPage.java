@@ -19,6 +19,22 @@ public class AmazonPage {
         driver.get(url);
 
         System.out.println("Opened: " + url);
+        System.out.println("Current URL: " + driver.getCurrentUrl());
+        System.out.println("Page Title: " + driver.getTitle());
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+
+            System.out.println("Price not found");
+            System.out.println("Page Title: " + driver.getTitle());
+            System.out.println("Current URL: " + driver.getCurrentUrl());
+
+            throw e;
+        }
     }
 
     public String getCurrentPrice() {//Explicit wait instead of thread
