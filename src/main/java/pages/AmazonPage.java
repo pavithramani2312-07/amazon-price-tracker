@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -23,6 +24,24 @@ public class AmazonPage {
         System.out.println("Opened: " + url);
         System.out.println("Current URL: " + driver.getCurrentUrl());
         System.out.println("Page Title: " + driver.getTitle());
+
+
+
+        try {
+            WebElement continueBtn = driver.findElement(
+                    By.xpath("//*[contains(text(),'Continue')]")
+            );
+
+            System.out.println("Continue button detected");
+
+            continueBtn.click();
+
+            Thread.sleep(3000);
+
+        } catch (Exception e) {
+            System.out.println("No Continue button found");
+        }
+
 
         try {
             Thread.sleep(5000);
