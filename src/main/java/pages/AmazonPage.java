@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 
 public class AmazonPage {
@@ -40,6 +42,17 @@ public class AmazonPage {
             System.out.println("PRICE NOT FOUND");
             System.out.println("Current URL: " + driver.getCurrentUrl());
             System.out.println("Page Title: " + driver.getTitle());
+
+            try {
+                Files.writeString(
+                        Path.of("amazon_debug.html"),
+                        driver.getPageSource()
+                );
+                System.out.println("HTML SAVED");
+            } catch (Exception fileException) {
+                fileException.printStackTrace();
+            }
+
 
             throw e;
         }
