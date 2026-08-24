@@ -27,14 +27,6 @@ public class AmazonPage {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        catch (Exception e) {
-
-            System.out.println("Price not found");
-            System.out.println("Page Title: " + driver.getTitle());
-            System.out.println("Current URL: " + driver.getCurrentUrl());
-
-            throw e;
-        }
     }
 
     public String getCurrentPrice() {//Explicit wait instead of thread
@@ -45,13 +37,11 @@ public class AmazonPage {
                                     By.cssSelector("span.a-price-whole")))
                     .getText();
         } catch (Exception e) {
+            System.out.println("PRICE NOT FOUND");
+            System.out.println("Current URL: " + driver.getCurrentUrl());
+            System.out.println("Page Title: " + driver.getTitle());
 
-            return wait.until(
-                            ExpectedConditions.visibilityOfElementLocated(
-                                    By.cssSelector(".a-price .a-offscreen")))
-                    .getText()
-                    .replace("₹", "")
-                    .replace(",", "");
+            throw e;
         }
     }
 
