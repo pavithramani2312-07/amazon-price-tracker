@@ -12,7 +12,9 @@ public class ConfigReader {
             InputStream input =
                     ConfigReader.class.getClassLoader()
                             .getResourceAsStream("config.properties");
-
+            if (input == null) {
+                throw new RuntimeException("config.properties not found");
+            }
             properties.load(input);
         } catch (Exception e) {
             e.printStackTrace();

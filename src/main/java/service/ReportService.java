@@ -3,8 +3,8 @@ package service;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import data.ExcelReader;
-import java.io.FileNotFoundException;
+import util.Constants;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -53,7 +53,7 @@ public class ReportService {
         for (int i = 0; i < 5; i++) {
             sheet.autoSizeColumn(i);
         }
-        FileOutputStream fos = new FileOutputStream("src/main/resources/priceReport.xlsx");
+        FileOutputStream fos = new FileOutputStream(Constants.REPORT_FILE);
         workbook.write(fos);
         fos.close();
         workbook.close();

@@ -1,9 +1,13 @@
 package service;
 
 import java.io.FileWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import util.Constants;
 
 public class DashboardService {
     private StringBuilder html;
+    private static final Logger log = LoggerFactory.getLogger(DashboardService.class);
     public void createDashboard(){
         html = new StringBuilder();
         html.append("<html>");
@@ -37,7 +41,22 @@ public class DashboardService {
         html.append("<td>").append(productName).append("</td>");
         html.append("<td>").append(targetPrice).append("</td>");
         html.append("<td>").append(currentPrice).append("</td>");
-        html.append("<td>").append(status).append("</td>");
+
+        if(status.equals("DROPPED")){
+            html.append("<td style='color:green'>")
+                    .append(status)
+                    .append("</td>");
+        }
+        else if(status.equals("HIGHER")){
+            html.append("<td style='color:red'>")
+                    .append(status)
+                    .append("</td>");
+        }
+        else{
+            html.append("<td style='color:orange'>")
+                    .append(status)
+                    .append("</td>");
+        }
 
         html.append("<td>");
         html.append("<a href = '").append(productUrl)
@@ -50,12 +69,12 @@ public class DashboardService {
             html.append("</table>");
             html.append("</body>");
             html.append("</html>");
-            FileWriter writer=new FileWriter("src/main/resources/dashboard.html");
+            FileWriter writer=new FileWriter(Constants.DASHBOARD_FILE);
             writer.write(html.toString());
             writer.close();
-            System.out.println("Dashboard created successfully");
+            log.info("Dashboard created successfully");
         }catch (Exception e){
-            e.printStackTrace();
+            log.error("Failed to create dashboard", e);
         }
 
     }

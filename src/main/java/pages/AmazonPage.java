@@ -5,25 +5,31 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import util.Constants;
+import util.ScreenshotUtil;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 
 public class AmazonPage {
-    WebDriver driver;
+    private static final Logger log =
+            LoggerFactory.getLogger(AmazonPage.class);
+    private final WebDriver driver;
 
     public AmazonPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    public void openproduct(String asin) {
-        String url = "https://www.amazon.in/dp/" + asin;
+    public void openProduct(String asin) {
+        String url = Constants.AMAZON_URL + asin;
         driver.get(url);
 
-        System.out.println("Opened: " + url);
-        System.out.println("Current URL: " + driver.getCurrentUrl());
-        System.out.println("Page Title: " + driver.getTitle());
+        log.info("Opened: {}", url);
+        log.info("Current URL: {}",  driver.getCurrentUrl());
+        log.info("Page Title: {}",  driver.getTitle());
 
 
 
@@ -32,24 +38,46 @@ public class AmazonPage {
                     By.xpath("//*[contains(text(),'Continue shopping')]")
             );
 
-            System.out.println("Continue button detected");
+            log.info("Continue button detected");
 
             continueBtn.click();
 
-            Thread.sleep(3000);
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+            wait.until(
+                    ExpectedConditions.presenceOfElementLocated(
+                            By.tagName("body")
+                    )
+            );
 
         } catch (Exception e) {
-            System.out.println("No Continue button found");
+            log.info("No Continue button found");
         }
 
 
         try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            WebDriverWait wait =
+                    new WebDriverWait(driver, Duration.ofSeconds(10));
+
+            wait.until(
+                    ExpectedConditions.presenceOfElementLocated(
+                            By.tagName("body")
+                    )
+            );
+        } catch (Exception e) {
+            log.error("Page load failed", e);
         }
     }
+    public boolean isProductAvailable(){
+        String title = driver.getTitle().toLowerCase();
+//        String pageSource = driver.getPageSource();
 
+        log.info("Checking availability...");
+        log.info("Title = {}", title);
+        return !(title.contains("page not found")
+                || title.contains("sorry")
+                || title.contains("dogs of amazon"));
+    }
     public String getCurrentPrice() {//Explicit wait instead of thread
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         try {
@@ -58,18 +86,23 @@ public class AmazonPage {
                                     By.cssSelector("span.a-price-whole")))
                     .getText();
         } catch (Exception e) {
-            System.out.println("PRICE NOT FOUND");
-            System.out.println("Current URL: " + driver.getCurrentUrl());
-            System.out.println("Page Title: " + driver.getTitle());
+            log.info("PRICE NOT FOUND");
+            log.error("Current URL: {}", driver.getCurrentUrl());
+            log.error("Page Title: {}", driver.getTitle());
+            ScreenshotUtil.takeScreenshot(
+                    driver,
+                    "price_not_found_" +
+                            System.currentTimeMillis());
+
 
             try {
                 Files.writeString(
                         Path.of("amazon_debug.html"),
                         driver.getPageSource()
                 );
-                System.out.println("HTML SAVED");
+                log.info("HTML SAVED");
             } catch (Exception fileException) {
-                fileException.printStackTrace();
+                log.error("Failed to save debug HTML", fileException);
             }
 
 

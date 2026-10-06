@@ -6,13 +6,12 @@ import util.ConfigReader;
 
 import java.io.File;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EmailService {
-    public void sendEmail(String subject, String body, String reportpath, String attachmentpath){
-       System.out.println(subject);
-       System.out.println(body);
-       System.out.println(reportpath);
-       System.out.println(attachmentpath);
+    private static final Logger log = LoggerFactory.getLogger(EmailService.class);
+    public void sendEmail(String subject, String body, String reportpath, String attachmentpath, String extentReportFile){
 
         // Fallback for local execution
         final String sendermail =
@@ -71,16 +70,19 @@ public class EmailService {
             multipart.addBodyPart(textPart);
             multipart.addBodyPart(reportPart);
             multipart.addBodyPart(dashboardPart);
+            MimeBodyPart extentAttachment = new MimeBodyPart();
+            extentAttachment.attachFile(extentReportFile);
+            multipart.addBodyPart(extentAttachment);
 
             message.setContent(multipart);
 
             Transport.send(message);
 
-            System.out.println(
+            log.info(
                     "Email sent successfully!");
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Failed to create dashboard", e);
         }}
 }

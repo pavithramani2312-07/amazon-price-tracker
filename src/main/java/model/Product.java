@@ -1,11 +1,9 @@
     package model;
 
-    import data.ExcelReader;
-
     public class Product {
-        String asin;
-        String productname;
-        Double targetprice;
+        private final String asin;
+        private final String productname;
+        private final Double targetprice;
 
         public Product(String asin, String productname, double targetprice){
             this.asin=asin;

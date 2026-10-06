@@ -24,10 +24,22 @@ dependencies {
 
     implementation 'org.seleniumhq.selenium:selenium-java:4.34.0'
     implementation 'io.github.bonigarcia:webdrivermanager:6.1.0'
+
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+    implementation 'ch.qos.logback:logback-classic:1.5.18'
+
+    testImplementation 'org.testng:testng:7.11.0'
+
+    implementation 'com.aventstack:extentreports:5.1.2'
+
 }
 
 test {
-    useJUnitPlatform()
+    useTestNG()
+    testLogging {
+        events "passed", "failed", "skipped"
+        showStandardStreams = true
+    }
 }
 
 application {
